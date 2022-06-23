@@ -1,0 +1,49 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}My list{% endblock %}
+
+{% block main %}
+
+<h1 style="margin: 60px 0; text-align: center;">My List</h1>
+<div style="width: 100%; padding-top: 30px;">
+    {% for element in auction %}
+        <div class="list-content list-content-my">
+            <div class="list-first">   
+
+                <div class="img-list img-list-my">
+                    <img src="{{ element.image }}" alt="img" class="img-content-my">
+                </div>
+                <div class="content-list content-list-my">
+                    <div class="content-item" style="text-align: center;">
+                        <a class="a-change" href="{% url 'auctions:list' element.id element.title %}">
+                            <span style="font-size: 3rem; font-weight: bold;"> {{ element.title | capfirst }}<p style="font-size: 1rem; padding: 0; margin: 0;">category- {{ element.category }}</p></span>
+                        </a>
+                    </div>
+
+                    <div class="content-item" style="min-height: 150px;">
+                        <strong>Description</strong><p>{{ element.description | capfirst}}</p>
+                    </div>
+
+                    <div class="content-item" style="min-height: 100px;">
+                        <strong>Initial bid - </strong>$ {{ element.price }}
+                        <p>Currently biddings</p>
+                    </div>
+
+                    <div class="content-item">
+                        <strong>Product created in</strong><p>{{ element.date }}</p>
+                    </div>
+                </div>             
+
+            </div>
+            <div style="flex:auto;">
+                <form action="{% url 'auctions:watchlist' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ list.id }}">
+                    <input class="btn btn-info btn-my" type="submit" value="Edit">
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

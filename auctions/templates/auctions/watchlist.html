@@ -1,0 +1,63 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}My WatchList{% endblock %}
+
+{% block main %}
+    {% if message %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+      </div>
+    {% endif %}
+
+    <h1 style="margin: 60px 0; text-align: center;">My WatchList</h1>
+    <div style="width: 100%; padding-top: 30px;">
+        {% for element in list %}
+            <div class="list-content">
+                <div class="list-first">   
+
+                    <div class="img-list">
+                        <img src="{{ element.image }}" alt="img" class="img-content">
+                    </div>
+                    <div class="content-list">
+                        <div class="content-item" style="text-align: center;">
+                            <a class="a-change" href="{% url 'auctions:list' element.id element.title %}">
+                                <span style="font-size: 3rem; font-weight: bold;"> {{ element.title | capfirst }}<p style="font-size: 1rem; padding: 0; margin: 0;">category- {{ element.category }}</p></span>
+                            </a>
+                        </div>
+
+                        <div class="content-item">
+                            <strong>Owner</strong><p>{{ element.id_user | capfirst }}</p>
+                        </div>
+
+                        <div class="content-item" style="min-height: 150px;">
+                            <strong>Description</strong><p>{{ element.description | capfirst}}</p>
+                        </div>
+
+                        <div class="content-item" style="min-height: 100px;">
+                            <strong>Initial bid - </strong>$ {{ element.price }}
+                            <p>Currently biddings</p>
+                        </div>
+
+                        <div class="content-item">
+                            <strong>Product created in</strong><p>{{ element.date }}</p>
+                        </div>
+                </div>             
+
+                </div>
+                <div style="flex:auto;">
+                    <form action="{% url 'auctions:watchlist' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ element.id }}">
+                        <input class="btn btn-info btn-w" type="submit" value="Undo WatchList">
+                    </form>
+                </div>
+            </div>
+            
+            {% empty %}
+                <h2 style="text-align: center;">You don't have any watchlist</h2>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}
+

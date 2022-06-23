@@ -1,0 +1,40 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Registration{% endblock %}
+
+{% block main %}
+
+    
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'auctions:register' %}" method="post">
+        {% csrf_token %}
+        <div class="register-box">
+            <h1 style="text-align: center; margin-bottom: 80px;">Register</h1>
+            <div class="form-group">
+                <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="email" name="email" placeholder="Email Address">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+            </div>
+            <input class="btn btn-primary btn-r" type="submit" value="Confirm">
+            <p style="text-align:center;">Already have an account? <a href="{% url 'auctions:login' %}">Log In here.</a></p>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block footer %}
+<footer>
+    Creates as Project 2 - Auctions - Course CS50 web
+</footer>
+{% endblock %}

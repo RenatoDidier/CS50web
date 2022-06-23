@@ -1,0 +1,36 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Create an auction{% endblock %}
+
+{% block main %}
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'auctions:create' %}" method="post">
+        {% csrf_token %}
+        <div class="register-box">
+            <h1 style="text-align: center; margin-bottom: 40px;">New Product</h1>
+            <div class="form-group form-group-l">
+                <input class="form-control" autofocus type="text" name="title" placeholder="Title">
+            </div>
+            <div class="form-group form-group-l">
+                <input class="form-control" type="text" name="category" placeholder="Category">
+            </div>
+            <div class="form-group form-group-l">
+                <textarea class="form-control" name="description" placeholder="Talk a little about your product" style="height: 130px;"></textarea>
+            </div>
+            <div class="form-group form-group-l">
+                <input class="form-control" type="number" name="initial_price" placeholder="Initial bids">
+            </div>
+            <div class="form-group form-group-l">
+                <input class="form-control" type="url" name="url_img" placeholder="Put an URL of the product">
+            </div>
+            <input class="btn btn-primary btn-r" type="submit" value="Create">
+        </div>
+    </form>
+
+
+{% endblock %}
+

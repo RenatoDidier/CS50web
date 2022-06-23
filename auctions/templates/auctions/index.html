@@ -1,0 +1,42 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Auctions{% endblock %}
+
+{% block main %}
+    <h1 style="margin: 60px 0; text-align: center;">All Listing products</h1>
+    <div style="width: 100%; height: auto; padding-top: 30px;">
+        {% for element in auction %}  
+            <div class="list-content">
+                <div class="list-first">   
+                    <div class="img-list">
+                        <img src="{{ element.image }}" alt="img" class="img-content">
+                    </div>
+                    <div class="content-list">
+                        <div class="content-item" style="text-align: center;">
+                            <a class="a-change" href="{% url 'auctions:list' element.id element.title %}"><span style="font-size: 3rem; font-weight: bold;"> {{ element.title | capfirst }} </a> <p style="font-size: 1rem; padding: 0; margin: 0;">category- {{ element.category }}</p></span>
+                        </div>
+
+                        <div class="content-item">
+                            <strong>Owner</strong><p>{{ element.id_user | capfirst }}</p>
+                        </div>
+
+                        <div class="content-item">
+                            <strong>Description</strong><p>{{ element.description | capfirst }}</p>
+                        </div>
+
+                        <div class="content-item">
+                            <strong>Price</strong><p>$ {{ element.price }}</p>
+                        </div>
+
+                        <div class="content-item">
+                            <strong>Product created in</strong><p>{{ element.date }}</p>
+                        </div>
+                    </div>             
+                </div>
+            </div>          
+        {% endfor %}  
+    </div>
+
+
+{% endblock %}
+

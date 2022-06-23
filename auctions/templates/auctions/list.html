@@ -1,0 +1,44 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}{{ list.title }} {% endblock %}
+{% block main %}
+    <div class="listing-container">
+        <div class="listing-content">
+            <h2>Listing: {{ list.title }}</h2>
+            <button class="btn-wl btn btn-secondary">WatchList</button><button class="btn-wl btn btn-success">ON</button>
+        </div>
+        <div class="listing-content">
+            <img src="{{ list.image }}" alt="img" style="height: 400px">
+        </div>
+        <div class="listing-content">
+            <h4>${{ list.price }}</h4>
+            <p>informação sobre os bids</p>
+            {% if user.is_authenticated %}
+                <p>INPUT para os bids</p>
+                <input type="submit" class="btn btn-primary" value="Place Bid">
+            {% endif %}
+        </div>
+        <div class="listing-content">
+            <h4>Details</h4>
+            <ul>
+                <li><strong>Owner:</strong> {{ list.id_user }} </li>
+                <li><strong>Category:</strong> {{ list.category }} </li>
+            </ul>
+        </div>
+        {% if user.is_authenticated %}
+            <form action="{% url 'auctions:watchlist' %}" method="post">
+                <div class="listing-content">
+                
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ list.id }}">
+                    <input class="btn btn-info btn-w" style="margin-left: 30px; transform: translateX(0);" type="submit" value="WatchList">
+                </div>
+            </form>
+        {% endif %}
+        <div class="listing-content">
+            <h4>Comments Section</h4>
+        </div>
+    </div>
+
+
+{% endblock %}

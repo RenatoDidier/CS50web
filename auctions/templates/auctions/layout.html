@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>CS50auctions: {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar bg-custom">
+                <div class="fluid-container" style="width: 100vw;">
+                    <div class="layout-div">
+                        <ul class="navbar-nav">
+                            {% if user.is_authenticated %}
+                                <li class="nav-item" style="margin-left: 40px;">
+                                    <a class="nav-link" href="{% url 'auctions:index' %}">Active Listings</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'auctions:mylist' %}">My list</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'auctions:create' %}">Create a product</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'auctions:watchlist' %}">My WatchList</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'auctions:logout' %}">Log Out</a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item item-off" style="margin-left: 200px; margin-right: 500px;">
+                                    <a class="nav-link link-off" href="{% url 'auctions:index' %}">Active Listings</a>
+                                </li>
+                                <li class="nav-item item-off">
+                                    <a class="nav-link link-off" href="{% url 'auctions:login' %}">Log In</a>
+                                </li>
+                                <li class="nav-item item-off">
+                                    <a class="nav-link link-off" href="{% url 'auctions:register' %}">Register</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <div class="logo-div">
+                        <a href="{% url 'auctions:index' %}" class="logo-link">
+                            <img src="{% static 'auctions/auction.png' %}" alt="auction img" style="width:20%">
+                            <span class="logo-txt" style="font-family: monospace; font-weight: bold; vertical-align: middle;">CS50</span><span class="logo-txt" style="font-family:'Times New Roman', Times, serif; vertical-align: bottom;">auction</span>
+                        </a>
+                        {% if user.is_authenticated %}
+                            <p class="logo-user">Hello, <strong>{{ user.username }}</strong>.</p>
+                            <p class="logo-user">Have a good day!</p>
+                        {% endif %}
+                    </div>               
+            </nav>
+        </header>
+        <main>
+            
+            {% block main %}
+            {% endblock %}
+            
+        </main>
+        
+        {% block footer %}
+        {% endblock %}
+    </body>
+</html>
