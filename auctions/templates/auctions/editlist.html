@@ -1,0 +1,36 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Edit{% endblock %}
+
+{% block main %}
+
+    <form action="{% url 'auctions:editlist' list.id %}" method="post">
+        {% csrf_token %}
+        <div class="register-box" style="padding-top: 60px;">
+            <div class="form-group form-group-l">
+                <span class="text-editlist">Title </span><input class="form-control form-edlist" autofocus type="text" name="title" value="{{ list.title }}">
+            </div>
+            <div class="form-group form-group-l">
+                <span class="text-editlist">Category </span><select class="form-control form-edlist" name="category">
+                    <option>{{ list.category }}</option>
+                    {% for element in categories %}
+                        <option value="{{ element }}">{{ element }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group form-group-l">
+                <span class="text-editlist">Description </span><textarea class="form-control form-edlist" name="description" style="height: 130px;">{{ list.description }}</textarea>
+            </div>
+            <div class="form-group form-group-l">
+                <span class="text-editlist">Price </span><input class="form-control form-edlist" type="number" name="price" value="{{ list.price }}">
+            </div>
+            <div class="form-group form-group-l">
+                <span class="text-editlist">Image [URL] </span><input class="form-control form-edlist" type="url" name="url_img" value="{{ list.image }}">
+            </div>
+            <input class="btn btn-primary btn-r" type="submit" value="Change">
+        </div>
+    </form>
+
+
+{% endblock %}
+

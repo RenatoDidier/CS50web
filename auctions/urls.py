@@ -11,6 +11,10 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("create", views.create, name="create"),
     path("mylist", views.mylist, name="mylist"),
-    path("product/<int:id>/<str:title>", views.list, name="list"),
+    path("product/<str:id>/<str:title>", views.list, name="list"),
     path("watchlist", views.watchlist, name="watchlist"),
+    path("add_comment", views.add_comment, name="add_comment"),
+    path("rmv_comment", views.rmv_comment, name="rmv_comment"),
+    path("editcomment", views.editcomment, name="editcomment"),
+    path("editlist/<str:id_list>", views.editlist, name="editlist"),
 ]
