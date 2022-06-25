@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Edit{% endblock %}
+
+{% block main %}
+
+<form action="{% url 'auctions:editcomment' %}" method="post">
+    {% csrf_token %}
+    <div class="register-box" style="height: 50vh;">
+        <input type="hidden" name="id_list" value="{{ id_list }}">
+        <input type="hidden" name="id_comment" value="{{ comment.id }}">
+        <textarea style="margin-top: 30px; width: 90%; margin-left: 40px; height: 60%;" class="form-control" name="comment">{{ comment.comment }}</textarea>
+        <input class="btn btn-primary btn-r" type="submit" value="Change">
+    </div>
+</form>
+
+{% endblock %}

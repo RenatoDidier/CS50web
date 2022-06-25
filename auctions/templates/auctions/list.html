@@ -1,11 +1,18 @@
 {% extends "auctions/layout.html" %}
 
-{% block title %}{{ list.title }} {% endblock %}
+{% block title %}{{ list.title }}{% endblock %}
 {% block main %}
     <div class="listing-container">
         <div class="listing-content">
             <h2>Listing: {{ list.title }}</h2>
-            <button class="btn-wl btn btn-secondary">WatchList</button><button class="btn-wl btn btn-success">ON</button>
+            {% if user.is_authenticated %}
+                <button class="btn-wl btn btn-secondary">WatchList</button>
+                {% if wl_status == 1 %}
+                    <button class="btn-wl btn btn-success">ON</button>
+                {% else %}
+                    <button class="btn-wl btn btn-danger">OFF</button>
+                {% endif %}
+            {% endif %}
         </div>
         <div class="listing-content">
             <img src="{{ list.image }}" alt="img" style="height: 400px">
@@ -14,7 +21,8 @@
             <h4>${{ list.price }}</h4>
             <p>informação sobre os bids</p>
             {% if user.is_authenticated %}
-                <p>INPUT para os bids</p>
+                <form method=""
+            <p>INPUT para os bids</p>
                 <input type="submit" class="btn btn-primary" value="Place Bid">
             {% endif %}
         </div>
@@ -36,9 +44,44 @@
             </form>
         {% endif %}
         <div class="listing-content">
-            <h4>Comments Section</h4>
+            <h4 style="margin-bottom: 30px; margin-top: 90px;">Comments <button class="btn btn-secondary">{{ comments | length }}</button> </h4>
+            
+            {% for element in comments %}
+                <div class="listing-content" style="margin-bottom: 30px;">
+                    <h4 style="margin-left: 60px;">{{ element.id_user }}</h4>
+                    <div class="comment-section">
+                        {{ element.comment}}
+                    </div>
+                    {% if user.id == element.id_user.id %}
+                        <div class="btns-container">
+                            <div class="btn1-container">
+                                <form action="{% url 'auctions:rmv_comment' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id_c" value="{{ element.id }}">
+                                    <input type="hidden" name="title" value="{{ list.title }}">
+                                    <input type="hidden" name="id_l" value="{{ list.id }}">
+                                    <input class="btn btn-danger btn-c" type="submit" value="Delete">
+                                </form>
+                            </div>
+                            <div class="btn2-container">
+                                <a href="/editcomment?comment={{ element.id }}&id_list={{ list.id }}"><button class="btn btn-primary btn-c">Edit</button></a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+            {% endfor %}
+
+            {% if user.is_authenticated %}
+                <form action="{% url 'auctions:add_comment' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id_list" value="{{ list.id }}">
+                    <textarea class="form-control" name="comment" style="margin-left: 0; height: 80px; margin-bottom: 5px; margin-top: 80px;"></textarea>
+                    <input type="submit" class="btn btn-primary" value="Add Comment" style="margin-left:0; display: block;">
+                </form>
+            {% endif %}
+
         </div>
     </div>
-
 
 {% endblock %}

@@ -13,15 +13,15 @@
                     </div>
                     <div class="content-list">
                         <div class="content-item" style="text-align: center;">
-                            <a class="a-change" href="{% url 'auctions:list' element.id element.title %}"><span style="font-size: 3rem; font-weight: bold;"> {{ element.title | capfirst }} </a> <p style="font-size: 1rem; padding: 0; margin: 0;">category- {{ element.category }}</p></span>
+                            <a class="a-change" href="{% url 'auctions:list' element.id element.title %}"><span style="font-size: 2rem; font-weight: bold;"> {{ element.title | capfirst }} </a> <p style="font-size: 1rem; padding: 0; margin: 0;">category- {{ element.category }}</p></span>
                         </div>
 
                         <div class="content-item">
                             <strong>Owner</strong><p>{{ element.id_user | capfirst }}</p>
                         </div>
 
-                        <div class="content-item">
-                            <strong>Description</strong><p>{{ element.description | capfirst }}</p>
+                        <div class="content-item" >
+                            <strong>Description</strong><div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 180px;" >{{ element.description | capfirst }}</div>
                         </div>
 
                         <div class="content-item">
