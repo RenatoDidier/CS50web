@@ -25,6 +25,12 @@ def mylist(request):
         "auction": list,
     })
 
+<<<<<<< Updated upstream
+=======
+# list test
+
+
+>>>>>>> Stashed changes
 def list(request, id, title):
 
     list = AuctionListing.objects.get(pk=id, title=title)
