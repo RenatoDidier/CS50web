@@ -31,6 +31,7 @@ def mylist(request):
     })
 
 
+
 def list(request, id, title):
     list = AuctionListing.objects.get(pk=id, title=title)
     comments = Comments.objects.filter(id_list=list)
