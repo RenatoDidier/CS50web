@@ -6,9 +6,13 @@ from django.shortcuts import render
 from django.urls import reverse
 import datetime
 
+from sympy import re
+
 from .models import User, AuctionListing, WatchList, Comments
 
-categories_global = ["Geral", "Clothes", "Toys", "Gaming", "Acessory", "House", "Books"]
+categories_global = ["Geral", "Clothes", "Toys",
+                     "Gaming", "Acessory", "House", "Books"]
+
 
 def index(request):
     list = AuctionListing.objects.all()
@@ -29,11 +33,10 @@ def mylist(request):
 
 def list(request, id, title):
     list = AuctionListing.objects.get(pk=id, title=title)
-    comments = Comments.objects.filter(id_list = list)
-    user_id = User.objects.get(pk = request.user.id)
-
+    comments = Comments.objects.filter(id_list=list)
+    user_id = User.objects.get(pk=request.user.id)
     watchlist_status = 1
-    if not WatchList.objects.filter(id_user = user_id, id_list = list):
+    if not WatchList.objects.filter(id_user=user_id, id_list=list):
         watchlist_status = 0
 
     return render(request, "auctions/list.html", {
@@ -45,21 +48,21 @@ def list(request, id, title):
 
 def watchlist(request):
     if request.method == "POST":
-        id_l = AuctionListing.objects.get(pk = request.POST["id"])
-        id_u = User.objects.get(pk = request.user.id)
+        id_l = AuctionListing.objects.get(pk=request.POST["id"])
+        id_u = User.objects.get(pk=request.user.id)
 
         if not WatchList.objects.filter(id_list=id_l, id_user=id_u):
-            add = WatchList.objects.create(id_list = id_l, id_user = id_u)
+            add = WatchList.objects.create(id_list=id_l, id_user=id_u)
             add.save()
             return HttpResponseRedirect(reverse("auctions:watchlist"))
-        
+
         WatchList.objects.filter(id_list=id_l, id_user=id_u).delete()
         return HttpResponseRedirect(reverse("auctions:watchlist"))
-        
+
     else:
         list = []
-        id_user = User.objects.get(pk = request.user.id)
-        user_watchlists = WatchList.objects.filter(id_user = id_user)
+        id_user = User.objects.get(pk=request.user.id)
+        user_watchlists = WatchList.objects.filter(id_user=id_user)
 
         for element in user_watchlists:
             id_list = element.id_list
@@ -121,6 +124,7 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+
 def create(request):
     if request.method == "POST":
         id = request.user.id
@@ -132,7 +136,8 @@ def create(request):
         url_img = request.POST["url_img"]
         now = datetime.datetime.now()
 
-        listing = AuctionListing.objects.create(id_user = id_owner, title = title, category = category, description = description, image = url_img, price = price, date = now)
+        listing = AuctionListing.objects.create(
+            id_user=id_owner, title=title, category=category, description=description, image=url_img, price=price, date=now)
         listing.save()
         return HttpResponseRedirect(reverse("auctions:index"))
 
@@ -143,11 +148,12 @@ def create(request):
 
 
 def add_comment(request):
-    id_user = User.objects.get(pk = request.user.id)
-    id_list = AuctionListing.objects.get(pk = request.POST["id_list"])
+    id_user = User.objects.get(pk=request.user.id)
+    id_list = AuctionListing.objects.get(pk=request.POST["id_list"])
     comment = request.POST["comment"]
 
-    add_comment = Comments.objects.create(id_list = id_list, id_user = id_user, comment = comment)
+    add_comment = Comments.objects.create(
+        id_list=id_list, id_user=id_user, comment=comment)
     add_comment.save()
 
     url = ("/product/" + request.POST["id_list"] + "/" + id_list.title)
@@ -155,7 +161,7 @@ def add_comment(request):
 
 
 def rmv_comment(request):
-    id_c = Comments.objects.get(pk = request.POST["id_c"]).delete()
+    id_c = Comments.objects.get(pk=request.POST["id_c"]).delete()
 
     url = ("/product/" + request.POST["id_l"] + "/" + request.POST["title"])
     return HttpResponseRedirect(url)
@@ -163,18 +169,18 @@ def rmv_comment(request):
 
 def editcomment(request):
     if request.method == "POST":
-        comment = Comments.objects.get(pk = request.POST["id_comment"])
+        comment = Comments.objects.get(pk=request.POST["id_comment"])
         comment.comment = request.POST["comment"]
         comment.save()
 
-        url = ("/product/" + request.POST["id_list"] + "/" + comment.id_list.title)
+        url = ("/product/" +
+               request.POST["id_list"] + "/" + comment.id_list.title)
         return HttpResponseRedirect(url)
-
 
     else:
         id_comment = request.GET["comment"]
         id_list = request.GET["id_list"]
-        comment = Comments.objects.get(pk = id_comment)
+        comment = Comments.objects.get(pk=id_comment)
 
         return render(request, "auctions/editcomment.html", {
             "comment": comment,
@@ -190,7 +196,7 @@ def editlist(request, id_list):
         category = request.POST["category"]
         image = request.POST["url_img"]
 
-        list = AuctionListing.objects.get(pk = id_list)
+        list = AuctionListing.objects.get(pk=id_list)
 
         list.title = title
         list.description = description
@@ -203,7 +209,7 @@ def editlist(request, id_list):
         return HttpResponseRedirect(reverse("auctions:mylist"))
 
     else:
-        list = AuctionListing.objects.get(pk = id_list)
+        list = AuctionListing.objects.get(pk=id_list)
 
         return render(request, "auctions/editlist.html", {
             "list": list,
